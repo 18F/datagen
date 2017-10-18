@@ -5,10 +5,20 @@ import sys
 import os
 import io
 import csv
+import subprocess
+import linecache
+import random
 from time import strptime, mktime, strftime, localtime
 from datetime import datetime
 from . import method_dispatch
 
+try:
+    import lorem
+except ImportError:
+    lorem = None
+
+DEFAULT_MIN_WORDS = 2
+DEFAULT_MAX_WORDS = 2
 
 if sys.version_info.major == 2:
     from string import lowercase
@@ -202,3 +212,69 @@ def email(arg):
     domain = ''.join(choice(lset) for i in range(randrange(3, 15)))
     tld = choice(tlds)
     return "%s@%s.%s" % (name, domain, tld)
+
+
+def _linecount(filepath):
+    completed = subprocess.run(['wc', '-l', filepath], stdout=subprocess.PIPE)
+    return int(completed.stdout.split()[0])
+
+
+def _random_line(filepath):
+    line_no = random.randint(1, _linecount(filepath))
+    line = linecache.getline(filepath, line_no)
+    return line.strip()
+
+
+def _words_filepath():
+    """Filepath of unix `words` file"""
+
+    potential_paths = [os.path.join(p)
+                       for p in [[os.sep, 'usr', 'share', 'dict', 'words'],
+                                 [os.sep, 'usr', 'dict', 'words']]]
+    for path in potential_paths:
+        if os.path.exists(path):
+            return path
+    raise FileNotFoundError('No unix `words` file found')
+
+
+@register_type("words")
+def words(arg):
+    "Random words from Unix `words` file"
+    if arg:
+        args = arg_parser(arg)
+    else:
+        args = {'min': DEFAULT_MIN_WORDS, 'max': DEFAULT_MAX_WORDS}
+    filepath = _words_filepath()
+    word_count = random.randint(args['min'], args['max'])
+    word_list = []
+    for i in range(word_count):
+        word_list.append(_random_line(filepath))
+    return ' '.join(word_list)
+
+
+@register_type("word")
+def word(arg):
+    "Single random word from Unix `words` file"
+
+    return words({'min': 1, 'max': 1})
+
+
+@register_type("lorem")
+def lorem_sentence(arg):
+    if not lorem:
+        raise ImportError('`lorem` package not installed')
+    return lorem.sentence()
+
+
+@register_type("lorem-paragraph")
+def lorem_paragraph(arg):
+    if not lorem:
+        raise ImportError('`lorem` package not installed')
+    return lorem.paragraph()
+
+
+@register_type("lorem-long")
+def lorem_long(arg):
+    if not lorem:
+        raise ImportError('`lorem` package not installed')
+    return lorem.text()
