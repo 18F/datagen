@@ -23,6 +23,7 @@ if sys.version_info.major == 2:
     from string import lowercase
     from string import uppercase
     lset = lowercase + uppercase
+    FileNotFoundError = IOError
 elif sys.version_info.major == 3:
     from string import ascii_letters as lset
 
@@ -108,6 +109,8 @@ def integer_field_argument(arg):
 def incrementing_int_field(arg):
     incrementing_int_field.value += 1
     return incrementing_int_field.value
+
+
 incrementing_int_field.value = 0
 
 
@@ -155,7 +158,8 @@ def date_field_argument(arg):
 def date_field(args):
     before, after = args
 
-    return strftime("%Y-%m-%d", localtime(before + random() * (after - before)))
+    return strftime("%Y-%m-%d",
+                    localtime(before + random() * (after - before)))
 
 
 @type_arg("datetime")
@@ -182,7 +186,8 @@ def datetime_field(args):
 
 @register_type("ssn")
 def ssn_field(arg):
-    return "%.3i-%.2i-%.4i" % (randrange(1, 999), randrange(1, 99), randrange(1, 9999))
+    return "%.3i-%.2i-%.4i" % (randrange(1, 999), randrange(1, 99), randrange(
+        1, 9999))
 
 
 @register_type("firstname")
@@ -215,12 +220,11 @@ def email(arg):
 
 def _linecount(filepath):
     try:
-        completed = subprocess.run(
-            ['wc', '-l', filepath], stdout=subprocess.PIPE)
+        completed = subprocess.check_output(['wc', '-l', filepath])
     except FileNotFoundError as exc:
-        raise FileNotFoundError(
-            '`words` requires POSIX utility `wc`\n' + str(exc))
-    return int(completed.stdout.split()[0])
+        raise FileNotFoundError('`words` requires POSIX utility `wc`\n' + str(
+            exc))
+    return int(completed.split()[0])
 
 
 def _random_line(filepath):
@@ -247,11 +251,12 @@ def words_field(word_range):
     "Random words from local `word` file or Unix `words` file"
 
     filepath = _words_filepath()
-    word_count = randrange(word_range[0], word_range[1]+1)
+    word_count = randrange(word_range[0], word_range[1] + 1)
     word_list = []
     for i in range(word_count):
         word_list.append(_random_line(filepath))
     return ' '.join(word_list)
+
 
 @type_arg("words")
 def words_field_argument(args):

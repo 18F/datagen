@@ -211,6 +211,63 @@ Example::
     SNgOqbQ@YSpfbZQP.int
     asRooN@qjxukNUhLr.com
 
+**word**: Random word
+
+*Requires `words` file in local directory,
+or UNIX system with `words` file*
+
+Example::
+
+    word  word
+
+    estufa
+    blateness
+    paroxysm
+
+**words**: Random words
+
+*Requires `words` file in local directory,
+or UNIX system with `words` file*
+
+Params:
+
+* number: (optional) number of words, or [min, max]
+
+Examples::
+
+    words  words
+
+    volcanite utilizable drolly neuroclonic namelessness
+    cymaphyte metatarsal
+    paleornithological subvisible Boothian
+
+    words   words[3]
+
+    monocentric occipitoanterior purfled
+    outshut tugger fibrositis
+    hydatopneumatic breakneck auditor
+
+    words   words[1,2]
+
+    baggy
+    prefortunate flosh
+    potatoes
+
+**lorem**: Sentence of lorem ipsum
+
+*Requires installation of separate `lorem`_ module*
+
+.. _lorem: https://pypi.python.org/pypi/lorem
+
+Example::
+
+    blather  lorem
+
+    Eius magnam dolor non sed sed ut.
+    Dolorem amet magnam velit consectetur est.
+    Magnam numquam dolor aliquam.
+
+*Similar types:* `lorem-paragraph`, `lorem-long`
 
 Adding Your Own Types
 ---------------------

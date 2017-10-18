@@ -1,0 +1,679 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.14: http://docutils.sourceforge.net/" />
+<title>datagen: make sh[2] up</title>
+<style type="text/css">
+
+/*
+:Author: David Goodger (goodger@python.org)
+:Id: $Id: html4css1.css 7952 2016-07-26 18:15:59Z milde $
+:Copyright: This stylesheet has been placed in the public domain.
+
+Default cascading style sheet for the HTML output of Docutils.
+
+See http://docutils.sf.net/docs/howto/html-stylesheets.html for how to
+customize this style sheet.
+*/
+
+/* used to remove borders from tables and images */
+.borderless, table.borderless td, table.borderless th {
+  border: 0 }
+
+table.borderless td, table.borderless th {
+  /* Override padding for "table.docutils td" with "! important".
+     The right padding separates the table cells. */
+  padding: 0 0.5em 0 0 ! important }
+
+.first {
+  /* Override more specific margin styles with "! important". */
+  margin-top: 0 ! important }
+
+.last, .with-subtitle {
+  margin-bottom: 0 ! important }
+
+.hidden {
+  display: none }
+
+.subscript {
+  vertical-align: sub;
+  font-size: smaller }
+
+.superscript {
+  vertical-align: super;
+  font-size: smaller }
+
+a.toc-backref {
+  text-decoration: none ;
+  color: black }
+
+blockquote.epigraph {
+  margin: 2em 5em ; }
+
+dl.docutils dd {
+  margin-bottom: 0.5em }
+
+object[type="image/svg+xml"], object[type="application/x-shockwave-flash"] {
+  overflow: hidden;
+}
+
+/* Uncomment (and remove this text!) to get bold-faced definition list terms
+dl.docutils dt {
+  font-weight: bold }
+*/
+
+div.abstract {
+  margin: 2em 5em }
+
+div.abstract p.topic-title {
+  font-weight: bold ;
+  text-align: center }
+
+div.admonition, div.attention, div.caution, div.danger, div.error,
+div.hint, div.important, div.note, div.tip, div.warning {
+  margin: 2em ;
+  border: medium outset ;
+  padding: 1em }
+
+div.admonition p.admonition-title, div.hint p.admonition-title,
+div.important p.admonition-title, div.note p.admonition-title,
+div.tip p.admonition-title {
+  font-weight: bold ;
+  font-family: sans-serif }
+
+div.attention p.admonition-title, div.caution p.admonition-title,
+div.danger p.admonition-title, div.error p.admonition-title,
+div.warning p.admonition-title, .code .error {
+  color: red ;
+  font-weight: bold ;
+  font-family: sans-serif }
+
+/* Uncomment (and remove this text!) to get reduced vertical space in
+   compound paragraphs.
+div.compound .compound-first, div.compound .compound-middle {
+  margin-bottom: 0.5em }
+
+div.compound .compound-last, div.compound .compound-middle {
+  margin-top: 0.5em }
+*/
+
+div.dedication {
+  margin: 2em 5em ;
+  text-align: center ;
+  font-style: italic }
+
+div.dedication p.topic-title {
+  font-weight: bold ;
+  font-style: normal }
+
+div.figure {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+div.footer, div.header {
+  clear: both;
+  font-size: smaller }
+
+div.line-block {
+  display: block ;
+  margin-top: 1em ;
+  margin-bottom: 1em }
+
+div.line-block div.line-block {
+  margin-top: 0 ;
+  margin-bottom: 0 ;
+  margin-left: 1.5em }
+
+div.sidebar {
+  margin: 0 0 0.5em 1em ;
+  border: medium outset ;
+  padding: 1em ;
+  background-color: #ffffee ;
+  width: 40% ;
+  float: right ;
+  clear: right }
+
+div.sidebar p.rubric {
+  font-family: sans-serif ;
+  font-size: medium }
+
+div.system-messages {
+  margin: 5em }
+
+div.system-messages h1 {
+  color: red }
+
+div.system-message {
+  border: medium outset ;
+  padding: 1em }
+
+div.system-message p.system-message-title {
+  color: red ;
+  font-weight: bold }
+
+div.topic {
+  margin: 2em }
+
+h1.section-subtitle, h2.section-subtitle, h3.section-subtitle,
+h4.section-subtitle, h5.section-subtitle, h6.section-subtitle {
+  margin-top: 0.4em }
+
+h1.title {
+  text-align: center }
+
+h2.subtitle {
+  text-align: center }
+
+hr.docutils {
+  width: 75% }
+
+img.align-left, .figure.align-left, object.align-left, table.align-left {
+  clear: left ;
+  float: left ;
+  margin-right: 1em }
+
+img.align-right, .figure.align-right, object.align-right, table.align-right {
+  clear: right ;
+  float: right ;
+  margin-left: 1em }
+
+img.align-center, .figure.align-center, object.align-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table.align-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.align-left {
+  text-align: left }
+
+.align-center {
+  clear: both ;
+  text-align: center }
+
+.align-right {
+  text-align: right }
+
+/* reset inner alignment in figures */
+div.align-right {
+  text-align: inherit }
+
+/* div.align-center * { */
+/*   text-align: left } */
+
+.align-top    {
+  vertical-align: top }
+
+.align-middle {
+  vertical-align: middle }
+
+.align-bottom {
+  vertical-align: bottom }
+
+ol.simple, ul.simple {
+  margin-bottom: 1em }
+
+ol.arabic {
+  list-style: decimal }
+
+ol.loweralpha {
+  list-style: lower-alpha }
+
+ol.upperalpha {
+  list-style: upper-alpha }
+
+ol.lowerroman {
+  list-style: lower-roman }
+
+ol.upperroman {
+  list-style: upper-roman }
+
+p.attribution {
+  text-align: right ;
+  margin-left: 50% }
+
+p.caption {
+  font-style: italic }
+
+p.credits {
+  font-style: italic ;
+  font-size: smaller }
+
+p.label {
+  white-space: nowrap }
+
+p.rubric {
+  font-weight: bold ;
+  font-size: larger ;
+  color: maroon ;
+  text-align: center }
+
+p.sidebar-title {
+  font-family: sans-serif ;
+  font-weight: bold ;
+  font-size: larger }
+
+p.sidebar-subtitle {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+p.topic-title {
+  font-weight: bold }
+
+pre.address {
+  margin-bottom: 0 ;
+  margin-top: 0 ;
+  font: inherit }
+
+pre.literal-block, pre.doctest-block, pre.math, pre.code {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+pre.code .ln { color: grey; } /* line numbers */
+pre.code, code { background-color: #eeeeee }
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+span.classifier {
+  font-family: sans-serif ;
+  font-style: oblique }
+
+span.classifier-delimiter {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+span.interpreted {
+  font-family: sans-serif }
+
+span.option {
+  white-space: nowrap }
+
+span.pre {
+  white-space: pre }
+
+span.problematic {
+  color: red }
+
+span.section-subtitle {
+  /* font-size relative to parent (h1..h6 element) */
+  font-size: 80% }
+
+table.citation {
+  border-left: solid 1px gray;
+  margin-left: 1px }
+
+table.docinfo {
+  margin: 2em 4em }
+
+table.docutils {
+  margin-top: 0.5em ;
+  margin-bottom: 0.5em }
+
+table.footnote {
+  border-left: solid 1px black;
+  margin-left: 1px }
+
+table.docutils td, table.docutils th,
+table.docinfo td, table.docinfo th {
+  padding-left: 0.5em ;
+  padding-right: 0.5em ;
+  vertical-align: top }
+
+table.docutils th.field-name, table.docinfo th.docinfo-name {
+  font-weight: bold ;
+  text-align: left ;
+  white-space: nowrap ;
+  padding-left: 0 }
+
+/* "booktabs" style (no vertical lines) */
+table.docutils.booktabs {
+  border: 0px;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.docutils.booktabs * {
+  border: 0px;
+}
+table.docutils.booktabs th {
+  border-bottom: thin solid;
+  text-align: left;
+}
+
+h1 tt.docutils, h2 tt.docutils, h3 tt.docutils,
+h4 tt.docutils, h5 tt.docutils, h6 tt.docutils {
+  font-size: 100% }
+
+ul.auto-toc {
+  list-style-type: none }
+
+</style>
+</head>
+<body>
+<div class="document" id="datagen-make-sh-2-up">
+<h1 class="title">datagen: make sh[2] up</h1>
+
+<p>Datagen helps you create sample delimited data using a simple schema format.
+It runs on Python 2.6-3.4 and <em>particularly well</em> on PyPy.</p>
+<div class="section" id="installation">
+<h1>Installation</h1>
+<p><tt class="docutils literal">pip install datagen</tt></p>
+<p>Or:</p>
+<pre class="literal-block">
+$ git clone https://github.com/toddwilson/datagen.git
+$ cd datagen
+$ python setup.py install
+</pre>
+</div>
+<div class="section" id="usage">
+<h1>Usage</h1>
+<blockquote>
+usage: datagen [-h] [-d DELIMITER] [--with-header] -n NUM_ROWS -s SCHEMA [output]</blockquote>
+<p><strong>1. Create a schema file</strong></p>
+<pre class="literal-block">
+$ cat &gt; schema.txt &lt;&lt;EOL
+    #name      type[argument]
+    id         int[6]
+    first      firstname
+    last       lastname
+    email      email
+    dob        date[after=1945-01-01, before=2001-01-01]
+    password   string[8]
+    is_active  bool
+    language   randomset[python,ruby,go,java,c,js,brainfuck]
+EOL
+</pre>
+<p><strong>2. Make data</strong></p>
+<pre class="literal-block">
+$ datagen -s schema.txt -n 5 --with-header
+id|first|last|email|dob|password|is_active|language
+238476|Velma|Medrano|sxLYZTnPf&#64;ACLoxOVjUu.edu|1948-01-12|KmAcXnnS|1|python
+202490|Kathy|Wellman|pAXx&#64;MQcPrkMdNMcZa.com|1960-11-12|BwtZnRUN|1|java
+905703|Fern|Odell|iCQ&#64;KtN.mil|1972-12-12|ipVagvEB|0|c
+130211|Khadijah|Sheffield|KBPf&#64;ibR.edu|1961-02-02|ijAVDWUY|0|java
+643257|Patricia|Cummings|vaZqWhl&#64;YcVvZXx.int|1960-05-01|GJdImZaw|0|ruby
+</pre>
+<p><strong>3. Actually start working on what you should be working on</strong></p>
+</div>
+<div class="section" id="types">
+<h1>Types</h1>
+<p><strong>bool</strong>: 1 or 0 randomly.</p>
+<p><strong>int[length]</strong>: Random unsigned integer.</p>
+<p>Params:</p>
+<ul class="simple">
+<li>length: max-length</li>
+</ul>
+<p>Example:</p>
+<pre class="literal-block">
+number  numberint[3]
+
+509
+49
+783
+</pre>
+<p><strong>incrementing_int</strong>: Automatically incrementing unsigned integer.</p>
+<p>Example:</p>
+<pre class="literal-block">
+id  incrementing_int
+
+1
+2
+3
+</pre>
+<p><strong>string[length]</strong>: Random case-insensitive string.</p>
+<p>Params:</p>
+<ul class="simple">
+<li>length: max-length</li>
+</ul>
+<p>Example:</p>
+<pre class="literal-block">
+code  string[4]
+
+FiwH
+Acbj
+EtGM
+</pre>
+<p><strong>randomset[list]</strong>: Random member from a list</p>
+<p>Params:</p>
+<ul class="simple">
+<li>set: a comma-separated list of values</li>
+</ul>
+<p>Example:</p>
+<pre class="literal-block">
+country  randomset[US,UK,MX,CA,NZ]
+
+MX
+US
+CA
+</pre>
+<p><strong>ipv4</strong>: IPv4 address</p>
+<p>Example:</p>
+<pre class="literal-block">
+ip  ipv4
+
+18.149.184.112
+66.170.176.163
+186.49.28.83
+</pre>
+<p><strong>date</strong>: ISO 8601 date (YYYY-MM-DD)</p>
+<p>Params:</p>
+<ul class="simple">
+<li>before: ISO 8601 date top limit</li>
+<li>after: ISO 8601 bottom limit</li>
+</ul>
+<p>Example:</p>
+<pre class="literal-block">
+start_date  date[after=2013-01-01, before=2014-01-01]
+
+2013-10-05
+2013-01-10
+2013-05-14
+</pre>
+<p><strong>datetime</strong>: ISO 8601 datetime (YYYY-MM-DDTHH:MM:SS)</p>
+<p>Params:</p>
+<ul class="simple">
+<li>before: ISO 8601 datetime top limit</li>
+<li>after: ISO 8601 bottomtime limit</li>
+</ul>
+<p>Example:</p>
+<pre class="literal-block">
+start_at  datetime[after=2013-01-01T00:00:00, before=2014-01-01T00:00:00]
+
+2013-10-03T13:00:23
+2013-05-12T00:00:06
+2013-09-20T03:18:02
+</pre>
+<p><strong>ssn</strong>: 9-digit Social Security Number</p>
+<p>Example:</p>
+<pre class="literal-block">
+ssn  ssn
+
+421-87-2421
+889-27-3485
+861-33-1570
+</pre>
+<p><strong>firstname</strong>: Randomized first name (from top names in US Census data)</p>
+<p>Example:</p>
+<pre class="literal-block">
+first  firstname
+
+Todd
+Jessika
+Dustin
+</pre>
+<p><strong>lastname</strong>: Randomized last name (from top names in US Census data)</p>
+<p>Example:</p>
+<pre class="literal-block">
+last  lastname
+
+Rivers
+Akins
+Reardon
+</pre>
+<p><strong>zipcode</strong>: 5-digit zipcode</p>
+<p>Example:</p>
+<pre class="literal-block">
+zip  zipcode
+
+47245
+59502
+20191
+</pre>
+<p><strong>state</strong>: US States (2 letter)</p>
+<p>Example:</p>
+<pre class="literal-block">
+state  state
+
+ID
+KY
+AK
+</pre>
+<p><strong>email</strong>: Email address</p>
+<p>Example:</p>
+<pre class="literal-block">
+email  email
+
+QnqfpcP&#64;PIbsLUKq.org
+SNgOqbQ&#64;YSpfbZQP.int
+asRooN&#64;qjxukNUhLr.com
+</pre>
+<p><strong>word</strong>: Random word</p>
+<p><em>Requires `words` file in local directory,
+or UNIX system with `words` file</em></p>
+<p>Example:</p>
+<pre class="literal-block">
+word  word
+
+estufa
+blateness
+paroxysm
+</pre>
+<p><strong>words</strong>: Random words</p>
+<p><em>Requires `words` file in local directory,
+or UNIX system with `words` file</em></p>
+<p>Params:</p>
+<ul class="simple">
+<li>number: (optional) number of words, or [min, max]</li>
+</ul>
+<p>Examples:</p>
+<pre class="literal-block">
+words  words
+
+volcanite utilizable drolly neuroclonic namelessness
+cymaphyte metatarsal
+paleornithological subvisible Boothian
+
+words   words[3]
+
+monocentric occipitoanterior purfled
+outshut tugger fibrositis
+hydatopneumatic breakneck auditor
+
+words   words[1,2]
+
+baggy
+prefortunate flosh
+potatoes
+</pre>
+<p><strong>lorem</strong>: Sentence of lorem ipsum</p>
+<p><em>Requires installation of separate `lorem`_ module</em></p>
+<p>Example:</p>
+<pre class="literal-block">
+blather  lorem
+
+Eius magnam dolor non sed sed ut.
+Dolorem amet magnam velit consectetur est.
+Magnam numquam dolor aliquam.
+</pre>
+<p><em>Similar types:</em> <cite>lorem-paragraph</cite>, <cite>lorem-long</cite></p>
+</div>
+<div class="section" id="adding-your-own-types">
+<h1>Adding Your Own Types</h1>
+<p>It's really easy to add your own types to use in a schema file. Just create a
+method that accepts a single argument and decorate it with <cite>datagen.types.reg_type</cite>.</p>
+<p>Example:</p>
+<p>&lt;my_datagen.py&gt;</p>
+<pre class="code python literal-block">
+<span class="keyword namespace">from</span> <span class="name namespace">random</span> <span class="keyword namespace">import</span> <span class="name">uniform</span>
+<span class="keyword namespace">from</span> <span class="name namespace">datagen.types</span> <span class="keyword namespace">import</span> <span class="name">reg_type</span>
+<span class="keyword namespace">from</span> <span class="name namespace">datagen</span> <span class="keyword namespace">import</span> <span class="name">main</span>
+
+
+<span class="name decorator">&#64;register_type</span><span class="punctuation">(</span><span class="literal string double">&quot;price&quot;</span><span class="punctuation">)</span>  <span class="comment single"># the decorator sets the name of the type</span>
+<span class="keyword">def</span> <span class="name function">price</span><span class="punctuation">(</span><span class="name">arg</span><span class="punctuation">):</span>  <span class="comment single"># the method must accept one argument (even if not used)</span>
+    <span class="keyword">return</span> <span class="name builtin">round</span><span class="punctuation">(</span><span class="name">uniform</span><span class="punctuation">(</span><span class="literal number integer">0</span><span class="punctuation">,</span> <span class="literal number integer">100</span><span class="punctuation">),</span> <span class="literal number integer">2</span><span class="punctuation">)</span>
+
+
+<span class="keyword">if</span> <span class="name variable magic">__name__</span> <span class="operator">==</span> <span class="literal string single">'__main__'</span><span class="punctuation">:</span>
+    <span class="name">main</span><span class="punctuation">()</span>
+</pre>
+<p>&lt;schema.txt&gt;</p>
+<pre class="literal-block">
+item_id   int[5]
+price     price
+</pre>
+<pre class="literal-block">
+$ python my_datagen.py -s schema.txt -n 3
+41746|7.32
+4077|40.55
+12814|43.82
+</pre>
+<div class="section" id="adding-arguments-to-your-types">
+<h2>Adding Arguments to Your Types</h2>
+<p>&lt;my_datagen.py&gt;</p>
+<pre class="code python literal-block">
+<span class="keyword namespace">from</span> <span class="name namespace">random</span> <span class="keyword namespace">import</span> <span class="name">uniform</span>
+<span class="keyword namespace">from</span> <span class="name namespace">datagen.types</span> <span class="keyword namespace">import</span> <span class="name">register_type</span><span class="punctuation">,</span> <span class="name">type_arg</span>
+<span class="keyword namespace">from</span> <span class="name namespace">datagen</span> <span class="keyword namespace">import</span> <span class="name">main</span>
+
+
+<span class="name decorator">&#64;type_arg</span><span class="punctuation">(</span><span class="literal string double">&quot;price&quot;</span><span class="punctuation">)</span>  <span class="comment single"># Use the same name as the type defined in reg_type()</span>
+<span class="keyword">def</span> <span class="name function">price_argument</span><span class="punctuation">(</span><span class="name">arg</span><span class="punctuation">):</span>  <span class="comment single"># This method is passed the contents of what's in price[]</span>
+    <span class="keyword">return</span> <span class="name builtin">int</span><span class="punctuation">(</span><span class="name">arg</span><span class="punctuation">)</span>  <span class="comment single"># This will get passed to price() when iterating</span>
+
+
+<span class="name decorator">&#64;register_type</span><span class="punctuation">(</span><span class="literal string double">&quot;price&quot;</span><span class="punctuation">)</span>  <span class="comment single"># the decorator sets the name of the type</span>
+<span class="keyword">def</span> <span class="name function">price</span><span class="punctuation">(</span><span class="name">max_price</span><span class="punctuation">):</span>  <span class="comment single"># the method must accept one argument (even if not used)</span>
+    <span class="keyword">return</span> <span class="name builtin">round</span><span class="punctuation">(</span><span class="name">uniform</span><span class="punctuation">(</span><span class="literal number integer">0</span><span class="punctuation">,</span> <span class="name">max_price</span><span class="punctuation">),</span> <span class="literal number integer">2</span><span class="punctuation">)</span>
+
+
+<span class="keyword">if</span> <span class="name variable magic">__name__</span> <span class="operator">==</span> <span class="literal string single">'__main__'</span><span class="punctuation">:</span>
+    <span class="name">main</span><span class="punctuation">()</span>
+</pre>
+<p>&lt;schema.txt&gt;</p>
+<pre class="literal-block">
+item_id   int[5]
+price     price[10]
+</pre>
+<pre class="literal-block">
+$ python my_datagen.py -s schema.txt -n 3
+66995|5.08
+5894|7.86
+53659|9.26
+</pre>
+</div>
+</div>
+<div class="section" id="performance">
+<h1>Performance</h1>
+<p>If you need datagen to write faster, use PyPy:</p>
+<pre class="literal-block">
+$ time python my_datagen.py -s schema.txt -n 1000000 &gt; test_data
+python my_datagen.py -s schema.txt -n 1000000 &gt; test_data  7.87s user 0.07s system 99% cpu 7.950 total
+
+$ time pypy my_datagen.py -s schema.txt -n 1000000 &gt; test_data
+pypy my_datagen.py -s schema.txt -n 1000000 &gt; test_data  2.79s user 0.06s system 99% cpu 2.863 total
+</pre>
+</div>
+</div>
+</body>
+</html>

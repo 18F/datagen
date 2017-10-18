@@ -46,8 +46,77 @@ def test_without_headers(tmpdir):
     assert result.count('|') == 35
 
 
-def test_delimeter(tmpdir):
+def test_delimiter(tmpdir):
     args = ['-n', '5', '--with-header', '-d', ',']
     result = _run_main(tmpdir, SCHEMA_FROM_README, args)
     assert result.count(',') == 42
     assert result.count('|') == 0
+
+def test_lorem_sentence(tmpdir):
+    args = ['-n', '1']
+    schema = "blather   lorem"
+    result = _run_main(tmpdir, schema, args)
+    n_words = len(result.split())
+    assert n_words > 2
+    n_paragraph_breaks = result.count('\n\n')
+    assert n_paragraph_breaks == 0
+    avg_word_len = len(result) / len(result.splitlines())
+    assert avg_word_len > 2
+
+def test_lorem_paragraph(tmpdir):
+    args = ['-n', '1']
+    schema = "blather   lorem-paragraph"
+    result = _run_main(tmpdir, schema, args)
+    n_words = len(result.split())
+    assert n_words > 6
+    n_paragraph_breaks = result.count('\n\n')
+    assert n_paragraph_breaks == 0
+    avg_word_len = len(result) / len(result.splitlines())
+    assert avg_word_len > 2
+
+def test_lorem_long(tmpdir):
+    args = ['-n', '1']
+    schema = "blather   lorem-long"
+    result = _run_main(tmpdir, schema, args)
+    n_words = len(result.split())
+    assert n_words > 10
+    n_lines = len(result.splitlines())
+    assert n_lines > 1
+    n_paragraph_breaks = result.count('\n\n')
+    assert n_paragraph_breaks > 0
+    avg_word_len = len(result) / len(result.splitlines())
+    assert avg_word_len > 2
+
+def test_word(tmpdir):
+    args = ['-n', '10']
+    schema = "word   word"
+    result = _run_main(tmpdir, schema, args)
+    n_words = len(result.split())
+    assert n_words == 10
+    avg_word_len = len(result) / len(result.splitlines())
+    assert avg_word_len > 2
+
+
+def test_words_unspecified_number(tmpdir):
+    args = ['-n', '10']
+    schema = "words   words"
+    result = _run_main(tmpdir, schema, args)
+    n_words = len(result.split())
+    assert 20 <= n_words <= 50
+    avg_word_len = len(result) / len(result.splitlines())
+    assert avg_word_len > 2
+
+
+def test_words_specified_number(tmpdir):
+    args = ['-n', '10']
+    schema = "words   words[3]"
+    result = _run_main(tmpdir, schema, args)
+    n_words = len(result.split())
+    assert n_words == 30
+
+def test_words_specified_range(tmpdir):
+    args = ['-n', '5']
+    schema = "words   words[5,10]"
+    result = _run_main(tmpdir, schema, args)
+    n_words = len(result.split())
+    assert 25 <= n_words <= 50
