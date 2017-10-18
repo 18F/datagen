@@ -1,13 +1,12 @@
 from __future__ import absolute_import
 
-from random import randrange, choice, random
+from random import randrange, choice, random, randint
 import sys
 import os
 import io
 import csv
 import subprocess
 import linecache
-import random
 from time import strptime, mktime, strftime, localtime
 from datetime import datetime
 from . import method_dispatch
@@ -18,7 +17,7 @@ except ImportError:
     lorem = None
 
 DEFAULT_MIN_WORDS = 2
-DEFAULT_MAX_WORDS = 2
+DEFAULT_MAX_WORDS = 5
 
 if sys.version_info.major == 2:
     from string import lowercase
@@ -215,48 +214,61 @@ def email(arg):
 
 
 def _linecount(filepath):
-    completed = subprocess.run(['wc', '-l', filepath], stdout=subprocess.PIPE)
+    try:
+        completed = subprocess.run(
+            ['wc', '-l', filepath], stdout=subprocess.PIPE)
+    except FileNotFoundError as exc:
+        raise FileNotFoundError(
+            '`words` requires POSIX utility `wc`\n' + str(exc))
     return int(completed.stdout.split()[0])
 
 
 def _random_line(filepath):
-    line_no = random.randint(1, _linecount(filepath))
+    line_no = randint(1, _linecount(filepath))
     line = linecache.getline(filepath, line_no)
     return line.strip()
 
 
 def _words_filepath():
-    """Filepath of unix `words` file"""
+    """Filepath of `words` file"""
 
-    potential_paths = [os.path.join(p)
-                       for p in [[os.sep, 'usr', 'share', 'dict', 'words'],
-                                 [os.sep, 'usr', 'dict', 'words']]]
+    potential_paths = [[os.getcwd(), 'words'],
+                       [os.sep, 'usr', 'share', 'dict', 'words'],
+                       [os.sep, 'usr', 'dict', 'words']]
     for path in potential_paths:
+        path = os.path.join(*path)
         if os.path.exists(path):
             return path
-    raise FileNotFoundError('No unix `words` file found')
+    raise FileNotFoundError('No Unix `words` file found')
 
 
 @register_type("words")
-def words(arg):
-    "Random words from Unix `words` file"
-    if arg:
-        args = arg_parser(arg)
-    else:
-        args = {'min': DEFAULT_MIN_WORDS, 'max': DEFAULT_MAX_WORDS}
+def words_field(word_range):
+    "Random words from local `word` file or Unix `words` file"
+
     filepath = _words_filepath()
-    word_count = random.randint(args['min'], args['max'])
+    word_count = randrange(word_range[0], word_range[1]+1)
     word_list = []
     for i in range(word_count):
         word_list.append(_random_line(filepath))
     return ' '.join(word_list)
 
+@type_arg("words")
+def words_field_argument(args):
+    if args:
+        args = args.split(',')
+        if len(args) > 2:
+            raise Exception('No more than 2 arguments')
+        return [int(args[0]), int(args[-1])]
+    else:
+        return [DEFAULT_MIN_WORDS, DEFAULT_MAX_WORDS]
+
 
 @register_type("word")
-def word(arg):
-    "Single random word from Unix `words` file"
+def word_field(arg):
+    "Single random word from local `words` file or Unix `words` file"
 
-    return words({'min': 1, 'max': 1})
+    return words_field([1, 1])
 
 
 @register_type("lorem")
